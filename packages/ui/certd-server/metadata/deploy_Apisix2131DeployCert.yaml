@@ -1,0 +1,76 @@
+showRunStrategy: false
+default:
+  strategy:
+    runStrategy: 1
+name: Apisix2131DeployCert
+title: APISIX 2.13.1-部署证书
+icon: svg:icon-lucky
+group: cdn
+desc: 自动部署证书到APISIX 2.13.1
+input:
+  cert:
+    title: 域名证书
+    helper: 请选择前置任务输出的域名证书
+    component:
+      name: output-selector
+      from:
+        - CertApply
+        - CertApplyLego
+        - CertApplyUpload
+    order: 0
+  certDomains:
+    title: 证书域名
+    helper: 当前申请的证书域名列表
+    component:
+      name: cert-domain-getter
+    required: false
+    order: 0
+  accessId:
+    title: APISIX 2.13.1授权
+    component:
+      name: access-selector
+      type: apisix2131
+    required: true
+    order: 0
+  deployMode:
+    title: 部署模式
+    helper: 选择部署模式：创建新证书或更新现有证书
+    component:
+      name: a-select
+      options:
+        - value: create
+          label: 创建新证书
+        - value: update
+          label: 更新现有证书
+    required: true
+    value: update
+    order: 0
+  certList:
+    title: SSL证书ID
+    helper: 要更新的证书ID，如果这里没有，请先手动绑定一次证书
+    component:
+      name: remote-select
+      vModel: value
+      mode: tags
+      type: plugin
+      typeName: Apisix2131DeployCert
+      action: onGetCertList
+      watches:
+        - certDomains
+        - accessId
+    required: true
+    mergeScript: |2-
+
+                return {
+                  component:{
+                    form: ctx.compute(({form})=>{
+                      return form
+                    })
+                  },
+               }
+              
+    order: 0
+output: {}
+type: builtIn
+pluginType: deploy
+scriptFilePath: ../../../plugins/plugin-apisix-2131/plugins/plugin-deploy-cert.js

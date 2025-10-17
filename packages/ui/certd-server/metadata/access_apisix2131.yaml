@@ -1,0 +1,28 @@
+name: apisix2131
+title: APISIX 2.13.1授权
+desc: APISIX 2.13.1版本专用授权配置
+icon: svg:icon-lucky
+type: builtIn
+pluginType: access
+input:
+  endpoint:
+    title: APISIX 2.13.1管理地址
+    component:
+      placeholder: http://192.168.11.11:9180
+    required: true
+    order: 0
+  apiKey:
+    title: ApiKey
+    component:
+      placeholder: ApiKey
+    helper: "[参考文档](https://apisix.apache.org/docs/apisix/admin-api/#using-environment-variables)在config中配置admin apiKey"
+    required: true
+    encrypt: true
+    order: 0
+  testRequest:
+    title: 测试
+    component:
+      name: api-test
+      action: TestRequest
+    helper: 点击测试接口是否正常
+    order: 0
